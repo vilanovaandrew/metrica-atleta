@@ -2513,6 +2513,11 @@
                                 </div>
                             </div>
                         </div>
+                        
+                        <!-- Input Minutos Mínimos -->
+                        <div style="flex:1; min-width:140px; display:flex; flex-direction:column; justify-content:flex-end;">
+                            <input type="number" id="adv-min-minutes" placeholder="Min. Minutos (ex: 90)" style="width:100%; height:38px; border-radius:8px; border:1px solid var(--border-color); padding:0 12px; font-size:13px; font-weight:600; color:var(--text-main); background:var(--bg-card); outline:none;" min="0">
+                        </div>
 
                     </div>
                 </div>
@@ -2784,7 +2789,7 @@
                 listDiv.innerHTML = '';
                 
                 let sortedItems = Array.from(listItems).sort();
-                if (containerId === 'ms-pos') {
+                if (containerId === 'ms-pos' || containerId === 'adv-ms-pos') {
                     const groups = { 'Goleiro': [], 'Defensores': [], 'Meio-Campo': [], 'Atacantes': [], 'Outros': [] };
                     sortedItems.forEach(item => {
                         const cat = categorizePosition(item);
@@ -3173,7 +3178,7 @@
                         const item = document.createElement('div');
                         item.className = 'home-search-result-item';
                         item.innerHTML = `
-                            <img src="${p.foto}" class="home-result-photo" onerror="this.src='https://www.zerozero.pt/images/dsgn/No_Photo_00001.png'">
+                            <img src="${p.foto}" class="home-result-photo" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'">
                             <div class="home-result-details">
                                 <span class="home-result-name">${p.apelido}</span>
                                 <span class="home-result-team-pos">${p.equipe} • ${p.posicao.split(/[\/;,]/)[0].trim()}</span>
@@ -3307,7 +3312,7 @@
                     card.innerHTML = `
                         <div class="player-card-header">
                             <button class="${compClass}" title="Comparar Atleta">${compSymbol}</button>
-                            <img src="${p.foto}" alt="${p.nome}" class="player-photo" onerror="this.src='https://www.zerozero.pt/images/dsgn/No_Photo_00001.png'">
+                            <img src="${p.foto}" alt="${p.nome}" class="player-photo" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'">
                         </div>
                         <div class="player-card-info">
                             <div class="player-nickname-wrapper">
@@ -3427,7 +3432,7 @@
                         </td>
                         <td>
                             <div class="table-player-info">
-                                <img src="${p.foto}" class="table-player-photo" onerror="this.src='https://www.zerozero.pt/images/dsgn/No_Photo_00001.png'">
+                                <img src="${p.foto}" class="table-player-photo" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'">
                                 <div>
                                     ${nameHtml}
                                     <div style="font-size:10px; color:var(--text-muted);">${p.nome}</div>
@@ -3582,7 +3587,7 @@
                 const histBody = document.getElementById('history-table-body');
                 histBody.innerHTML = '';
                 
-                const partidas_sorted = [...stats.partidasFiltradas].sort((a,b) => b.data.localeCompare(a.data));
+                const partidas_sorted = [...stats.partidasFiltradas];
                 partidas_sorted.forEach(part => {
                     const tr = document.createElement('tr');
                     
@@ -4015,7 +4020,7 @@
                             const div = document.createElement('div');
                             div.className = 'home-search-result-item';
                             div.innerHTML = `
-                                <img src="${p.foto}" class="home-result-photo" onerror="this.src='https://www.zerozero.pt/images/dsgn/No_Photo_00001.png'">
+                                <img src="${p.foto}" class="home-result-photo" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'">
                                 <div class="home-result-details">
                                     <span class="home-result-name">${p.apelido} <span style="font-size:10px; color:var(--text-muted); font-weight:normal;">- ${p.nome}</span></span>
                                     <span class="home-result-team-pos">${p.equipe} • ${p.posicao.split(/[\/;,]/)[0].trim()}</span>
@@ -4076,7 +4081,7 @@
                         <th>
                             <div class="compare-player-header-card">
                                 <button class="compare-remove-btn" onclick="removeComparePlayer(${idx})">✕</button>
-                                <img src="${p.foto}" class="compare-player-photo" onerror="this.src='https://www.zerozero.pt/images/dsgn/No_Photo_00001.png'">
+                                <img src="${p.foto}" class="compare-player-photo" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'">
                                 <div class="compare-player-name ${colorClass}">${p.apelido}</div>
                                 <div class="compare-player-team">${p.equipe}</div>
                             </div>
@@ -4321,7 +4326,7 @@
                 const posList = document.querySelector('#adv-ms-pos .multiselect-list');
 
                 if (compList) {
-                    Array.from(listChampionships).sort().forEach(c => {
+                    listChampionships.forEach(c => {
                         compList.innerHTML += `<label class="multiselect-item"><input type="checkbox" value="${c}"><span>${c}</span></label>`;
                     });
                 }
@@ -4338,13 +4343,8 @@
                         teamList.innerHTML += `<label class="multiselect-item"><input type="checkbox" value="${t}"><span>${t}</span></label>`;
                     });
                 }
-
-                if (posList) {
-                    const bases = ["Goleiro", "Defensores", "Meio-Campo", "Atacantes"];
-                    bases.forEach(pos => {
-                        posList.innerHTML += `<label class="multiselect-item"><input type="checkbox" value="${pos}"><span>${pos}</span></label>`;
-                    });
-                }
+                
+                populateMS('adv-ms-pos', listPositionsArray, 'Posições');
                 
                 // Configura os eventos (search, checagem e label)
                 setupMultiselect('adv-ms-comp', 'Competições');
@@ -4359,6 +4359,8 @@
                         ms.addEventListener('change', runAdvancedTabAnalysis);
                     }
                 });
+                const advMinInput = document.getElementById('adv-min-minutes');
+                if(advMinInput) advMinInput.addEventListener('change', runAdvancedTabAnalysis);
                 
                 advTabBasePopulated = true;
             }
@@ -4426,6 +4428,7 @@
                 const basePos = getSelectedMS('adv-ms-pos');
                 const baseTeam = getSelectedMS('adv-ms-team');
                 const baseAge = getSelectedMS('adv-ms-age');
+                const advMinMinutes = parseInt(document.getElementById('adv-min-minutes').value) || 0;
                 
                 // --- CASCATA AVANÇADA: Competições -> Equipes ---
                 const availableTeams = new Set();
@@ -4464,7 +4467,7 @@
                 // A não ser que seja um comportamento desejado? Por agora mantemos sem filtro base para o atleta
                 const stats = getFilteredPlayerStats(p, [], null, null);
 
-                let baselinePlayers = calculateBaselinePlayers(baseComp, basePos, baseTeam, baseAge);
+                let baselinePlayers = calculateBaselinePlayers(baseComp, basePos, baseTeam, baseAge, advMinMinutes);
 
                 document.getElementById('adv-tab-result').style.display = 'block';
                 document.getElementById('adv-tab-empty').style.display = 'none';
@@ -4482,16 +4485,16 @@
             }
 
             // Lógica da Aba de Estatísticas Avançadas (Reutilizável)
-            function calculateBaselinePlayers(baseComp, basePos, baseTeam, baseAge) {
+            function calculateBaselinePlayers(baseComp, basePos, baseTeam, baseAge, advMinMinutes = 0) {
                 return players.map(player => {
                     const playerStats = getFilteredPlayerStats(player, baseComp, null, null, baseTeam);
                     return { player, stats: playerStats };
                 }).filter(item => {
-                    if (item.stats.jogos === 0) return false;
+                    if (item.stats.minutos < (advMinMinutes || 1)) return false;
                     
                     if (basePos && basePos.length > 0) {
-                        const catPos = item.player.posicao.split(/[\/;,]/).map(x => categorizePosition(x.trim()));
-                        if (!catPos.some(pos => basePos.includes(pos))) return false;
+                        const playerPositions = item.player.posicao.split(/[\/;,]/).map(x => x.trim());
+                        if (!playerPositions.some(pos => basePos.includes(pos))) return false;
                     }
                     
                     if (baseAge && baseAge.length > 0) {
@@ -4555,7 +4558,7 @@
 
                 if (headerContainer) {
                     headerContainer.innerHTML = `
-                        <img src="${p.foto}" style="width:64px; height:64px; border-radius:50%; object-fit:cover; border:3px solid var(--accent-purple); box-shadow:0 0 18px rgba(139,92,246,0.4);" onerror="this.src='https://www.zerozero.pt/images/dsgn/No_Photo_00001.png'">
+                        <img src="${p.foto}" style="width:64px; height:64px; border-radius:50%; object-fit:cover; border:3px solid var(--accent-purple); box-shadow:0 0 18px rgba(139,92,246,0.4);" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png'">
                         <div style="flex:1;">
                             <div style="font-size:22px; font-weight:900; color:var(--text-main);">${p.apelido}</div>
                             <div style="font-size:12px; color:var(--text-muted);">${p.nome}</div>
@@ -4692,6 +4695,7 @@
                     clearAllMS('adv-ms-team');
                     clearAllMS('adv-ms-pos');
                     clearAllMS('adv-ms-age');
+                    document.getElementById('adv-min-minutes').value = '';
                     
                     document.getElementById('adv-tab-result').style.display = 'none';
                     document.getElementById('adv-tab-baseline-filters').style.display = 'none';

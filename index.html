@@ -1082,6 +1082,7 @@
             letter-spacing: 0.8px;
             user-select: none;
             transition: var(--transition);
+            white-space: nowrap;
         }
         body.light-theme .players-table th {
             background-color: #f1f5f9;
@@ -1097,6 +1098,7 @@
             border-bottom: 1px solid var(--border-color);
             vertical-align: middle;
             font-size: 13px;
+            white-space: nowrap;
         }
 
         .players-table tr {
@@ -1783,16 +1785,19 @@
 
             .header-nav {
                 width: 100%;
-                justify-content: space-around;
-                padding: 4px;
+                justify-content: center;
+                padding: 6px;
+                flex-wrap: wrap;
+                gap: 6px;
             }
 
             .nav-link-btn {
                 padding: 8px 12px;
-                font-size: 12px;
+                font-size: 11px;
                 gap: 5px;
-                flex: 1;
+                flex: 1 1 auto;
                 justify-content: center;
+                white-space: nowrap;
             }
 
             #theme-toggle-btn {
@@ -2069,7 +2074,7 @@
         </div>
 
         <!-- Navegação por Páginas -->
-        <nav class="header-nav" style="display: flex; align-items: center; gap: 10px;">
+        <nav class="header-nav">
             <button id="tab-home-btn" class="nav-link-btn active">🏠 Início</button>
             <button id="tab-scouting-btn" class="nav-link-btn">🔍 Scouting (<span id="scouting-count">0</span>)</button>
             <button id="tab-compare-btn" class="nav-link-btn">⚖ Comparador (<span id="compare-badge">0</span>/5)</button>

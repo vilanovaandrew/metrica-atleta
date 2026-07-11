@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Meta tags para evitar Cache -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
     <title>MétricaAtleta - Plataforma Profissional de Análise e Scouting</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2051,7 +2057,7 @@
     <!-- Header -->
     <header>
         <div class="logo-section" id="header-logo-home" style="cursor:pointer; display:flex; gap:12px; align-items:center;" title="Voltar ao Início">
-            <img src="logo.png" alt="MétricaAtleta" class="theme-logo-small">
+            <img src="logo.png?v=2.0" alt="MétricaAtleta" class="theme-logo-small">
             <div style="display:flex; flex-direction:column; justify-content:center;">
                 <div class="logo-text" style="line-height:1.1; margin:0; font-size:18px;">
                     MétricaAtleta
@@ -2179,13 +2185,20 @@
                     <!-- Faixa Etária -->
                     <div class="filter-group">
                         <label class="filter-group-label">Faixa Etária</label>
-                        <select id="filter-age" class="filter-select">
-                            <option value="">Todas as Idades</option>
-                            <option value="sub20">Sub-20 (≤ 19 anos)</option>
-                            <option value="20-25">20 a 25 anos</option>
-                            <option value="26-30">26 a 30 anos</option>
-                            <option value="super30">Acima de 30 anos</option>
-                        </select>
+                        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                            <select id="filter-age" class="filter-select">
+                                <option value="">Todas as Idades</option>
+                                <option value="sub20">Sub-20 (≤ 19 anos)</option>
+                                <option value="20-25">20 a 25 anos</option>
+                                <option value="26-30">26 a 30 anos</option>
+                                <option value="super30">Acima de 30 anos</option>
+                                <option value="custom">Personalizado...</option>
+                            </select>
+                            <div id="filter-age-custom" style="display:none; gap:8px;">
+                                <input type="number" id="filter-age-min" class="filter-select" placeholder="Min" style="width:65px; padding:8px 10px;">
+                                <input type="number" id="filter-age-max" class="filter-select" placeholder="Max" style="width:65px; padding:8px 10px;">
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Estatura -->
@@ -2198,7 +2211,12 @@
                                 <option value="medium">Médio (170-180 cm)</option>
                                 <option value="high">Alto (181-190 cm)</option>
                                 <option value="super">Muito Alto (&gt; 190 cm)</option>
+                                <option value="custom">Personalizado...</option>
                             </select>
+                            <div id="filter-height-custom" style="display:none; gap:8px;">
+                                <input type="number" id="filter-height-min" class="filter-select" placeholder="Min" style="width:65px; padding:8px 10px;">
+                                <input type="number" id="filter-height-max" class="filter-select" placeholder="Max" style="width:65px; padding:8px 10px;">
+                            </div>
                             <label class="check-filter-group">
                                 <input type="checkbox" id="height-empty-chk" checked>
                                 <span>Incl. s/ Alt.</span>
@@ -2275,8 +2293,8 @@
                                 </optgroup>
                                 <optgroup label="📌 Perfil">
                                     <option value="camisa_frequente">👕 Camisa Frequente</option>
-                                    <option value="altura">📏 Altura</option>
-                                    <option value="idade">🎂 Idade</option>
+                                    <option value="player.altura">📏 Altura</option>
+                                    <option value="player.idade">🎂 Idade</option>
                                 </optgroup>
                             </select>
                             <button id="sort-dir-btn" class="filter-select" style="width:auto; padding:0 12px; cursor:pointer; font-weight:700;" title="Alternar Direção">▼ Desc</button>
@@ -2303,7 +2321,7 @@
         <!-- ================= LANDING PAGE INICIAL MINIMALISTA ================= -->
         <div id="panel-home" class="view-panel active">
             <div class="home-center-layout">
-                <img src="logo.png" alt="MétricaAtleta - Análise e Comparação de Desempenho Baseado em Súmulas" class="theme-logo">
+                <img src="logo.png?v=2.0" alt="MétricaAtleta - Análise e Comparação de Desempenho Baseado em Súmulas" class="theme-logo">
                 
                 <!-- Barra de Busca Interativa com Autocomplete -->
                 <div class="home-search-container">
@@ -2403,8 +2421,8 @@
                                 <th data-sort="vermelhos90" style="cursor:pointer; text-align:center; color:var(--accent-yellow);">CV/90' <span class="sort-icon"></span></th>
                                 <!-- Perfil -->
                                 <th data-sort="camisa_frequente" style="cursor:pointer; text-align:center; border-left:2px solid var(--accent-purple); color:var(--accent-purple);">Camisa <span class="sort-icon"></span></th>
-                                <th data-sort="altura" style="cursor:pointer; text-align:center; color:var(--accent-purple);">Alt. <span class="sort-icon"></span></th>
-                                <th data-sort="idade" style="cursor:pointer; text-align:center; color:var(--accent-purple);">Idade <span class="sort-icon"></span></th>
+                                <th data-sort="player.altura" style="cursor:pointer; text-align:center; color:var(--accent-purple);">Alt. <span class="sort-icon"></span></th>
+                                <th data-sort="player.idade" style="cursor:pointer; text-align:center; color:var(--accent-purple);">Idade <span class="sort-icon"></span></th>
                             </tr>
                         </thead>
                         <tbody id="table-body"></tbody>
@@ -3252,16 +3270,9 @@
                             homeSearchInput.value = '';
                             homeSearchResults.style.display = 'none';
                             
-                            // Redireciona para a aba avançada
-                            const tabAdvancedBtn = document.getElementById('tab-advanced-btn');
-                            if (tabAdvancedBtn) tabAdvancedBtn.click();
-                            
-                            // Seleciona o atleta e roda a análise
-                            const sel = document.getElementById('advanced-player-select');
-                            if (sel) {
-                                sel.value = p.cbf + '|' + p.nome;
-                                runAdvancedTabAnalysis();
-                            }
+                            // Abre a ficha completa do atleta (Estatísticas Acumuladas)
+                            const stats = getFilteredPlayerStats(p, [], null, null, []);
+                            openModal(p, stats);
                         });
                         homeSearchResults.appendChild(item);
                     });
@@ -3803,6 +3814,11 @@
                             else if (ageGroup === '20-25') matchesAge = val >= 20 && val <= 25;
                             else if (ageGroup === '26-30') matchesAge = val >= 26 && val <= 30;
                             else if (ageGroup === 'super30') matchesAge = val > 30;
+                            else if (ageGroup === 'custom') {
+                                const min = parseInt(document.getElementById('filter-age-min').value) || 0;
+                                const max = parseInt(document.getElementById('filter-age-max').value) || 999;
+                                matchesAge = val >= min && val <= max;
+                            }
                         }
                     }
 
@@ -3815,6 +3831,11 @@
                         else if (filterHeightVal === 'medium') matchesHeight = val >= 170 && val <= 180;
                         else if (filterHeightVal === 'high') matchesHeight = val >= 181 && val <= 190;
                         else if (filterHeightVal === 'super') matchesHeight = val > 190;
+                        else if (filterHeightVal === 'custom') {
+                            const min = parseInt(document.getElementById('filter-height-min').value) || 0;
+                            const max = parseInt(document.getElementById('filter-height-max').value) || 999;
+                            matchesHeight = val >= min && val <= max;
+                        }
                     }
 
                     // Filtro de nível (profissional/amador) via campo nivel do atleta ou da partida
@@ -3974,9 +3995,21 @@
             searchInput.addEventListener('input', () => { currentPage = 1; applyFilters(); });
             filterFoot.addEventListener('change', () => { currentPage = 1; applyFilters(); });
             footEmptyChk.addEventListener('change', () => { currentPage = 1; applyFilters(); });
-            filterAge.addEventListener('change', () => { currentPage = 1; applyFilters(); });
-            filterHeight.addEventListener('change', () => { currentPage = 1; applyFilters(); });
+            filterAge.addEventListener('change', (e) => {
+                document.getElementById('filter-age-custom').style.display = e.target.value === 'custom' ? 'flex' : 'none';
+                currentPage = 1; applyFilters(); 
+            });
+            filterHeight.addEventListener('change', (e) => { 
+                document.getElementById('filter-height-custom').style.display = e.target.value === 'custom' ? 'flex' : 'none';
+                currentPage = 1; applyFilters(); 
+            });
             heightEmptyChk.addEventListener('change', () => { currentPage = 1; applyFilters(); });
+            
+            // Listeners de custom inputs de age/height
+            document.getElementById('filter-age-min').addEventListener('input', () => { currentPage = 1; applyFilters(); });
+            document.getElementById('filter-age-max').addEventListener('input', () => { currentPage = 1; applyFilters(); });
+            document.getElementById('filter-height-min').addEventListener('input', () => { currentPage = 1; applyFilters(); });
+            document.getElementById('filter-height-max').addEventListener('input', () => { currentPage = 1; applyFilters(); });
             
             // Listeners dos inputs de data
             filterDateStart.addEventListener('change', () => { currentPage = 1; applyFilters(); });

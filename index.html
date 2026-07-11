@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Súmula Inteligente - Plataforma Profissional de Análise e Scouting</title>
+    <title>MétricaAtleta - Plataforma Profissional de Análise e Scouting</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2006,6 +2006,41 @@
                 max-height: 96vh;
             }
         }
+
+        .theme-logo {
+            width: 100%;
+            max-width: 500px;
+            object-fit: contain;
+            margin-bottom: 25px;
+            filter: drop-shadow(0 0 4px rgba(255,255,255,1)) drop-shadow(0 0 10px rgba(255,255,255,0.7));
+            transition: filter 0.3s ease;
+        }
+        body.light-theme .theme-logo {
+            filter: drop-shadow(0 0 20px rgba(0,255,102,0.1));
+            mix-blend-mode: multiply;
+        }
+        
+        .theme-logo-small {
+            height: 38px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 2px rgba(255,255,255,1)) drop-shadow(0 0 6px rgba(255,255,255,0.7));
+            transition: filter 0.3s ease;
+        }
+        body.light-theme .theme-logo-small {
+            filter: drop-shadow(0 0 10px rgba(0,255,102,0.2));
+            mix-blend-mode: multiply;
+        }
+
+        @keyframes pulse-acima {
+            0% { box-shadow: 0 0 0 0 rgba(0,255,102,0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(0,255,102,0); }
+            100% { box-shadow: 0 0 0 0 rgba(0,255,102,0); }
+        }
+        @keyframes pulse-abaixo {
+            0% { box-shadow: 0 0 0 0 rgba(239,68,68,0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(239,68,68,0); }
+            100% { box-shadow: 0 0 0 0 rgba(239,68,68,0); }
+        }
     </style>
 </head>
 <body class="light-theme">
@@ -2016,15 +2051,13 @@
     <!-- Header -->
     <header>
         <div class="logo-section" id="header-logo-home" style="cursor:pointer; display:flex; gap:12px; align-items:center;" title="Voltar ao Início">
-            <div style="display:flex; align-items:center; justify-content:center; width:38px; height:38px; background:linear-gradient(135deg, var(--accent-green), var(--accent-blue)); border-radius:10px; color:#030712; font-size:20px; box-shadow:0 4px 15px -3px var(--accent-green-glow);">
-                ⚽
-            </div>
+            <img src="logo.png" alt="MétricaAtleta" class="theme-logo-small">
             <div style="display:flex; flex-direction:column; justify-content:center;">
                 <div class="logo-text" style="line-height:1.1; margin:0; font-size:18px;">
-                    Súmula Inteligente
+                    MétricaAtleta
                 </div>
                 <div style="font-size:10px; color:var(--text-muted); font-weight:700; letter-spacing:1px; text-transform:uppercase;">
-                    Plataforma de Scouting
+                    Plataforma de Scouting Inteligente
                 </div>
             </div>
         </div>
@@ -2049,7 +2082,7 @@
         <div class="kpi-section">
             <div class="kpi-widget">
                 <span class="kpi-num" id="kpi-players">0</span>
-                <span class="kpi-title">Jogadores</span>
+                <span class="kpi-title">Atletas</span>
             </div>
             <div class="kpi-widget">
                 <span class="kpi-num" id="kpi-teams">0</span>
@@ -2213,39 +2246,46 @@
 
                     <!-- Ordenação Geral -->
                     <div class="filter-group">
-                        <label class="filter-group-label">🗒 Ordenar por Categoria</label>
-                        <select id="sort-by" class="filter-select">
-                            <optgroup label="⏱ Participação">
-                                <option value="jogos">📅 Partidas</option>
-                                <option value="minutos" selected>⏱ Minutos Jogados</option>
-                                <option value="titulares">🏆 Como Titular</option>
-                                <option value="reservas">🪑 Como Reserva</option>
-                                <option value="pctTitular">📊 % Titularidade</option>
-                                <option value="mediaMinutos">⏰ Média Mins/Jogo</option>
-                            </optgroup>
-                            <optgroup label="⚽ Ofensivo">
-                                <option value="gols">⚽ Gols Marcados</option>
-                                <option value="gols90">⚽ Gols / 90'</option>
-                                <option value="gols_contra">🔴 Gols Contra</option>
-                            </optgroup>
-                            <optgroup label="🛡 Defensivo">
-                                <option value="gols_sofridos">🛡 Gols Sofridos Em Campo</option>
-                                <option value="golsSofridos90">🛡 Gols Sofridos / 90'</option>
-                            </optgroup>
-                            <optgroup label="🟨 Disciplinar">
-                                <option value="amarelos90">🟨 Amarelos / 90'</option>
-                                <option value="vermelhos90">🟥 Vermelhos / 90'</option>
-                            </optgroup>
-                            <optgroup label="📌 Perfil">
-                                <option value="altura">📏 Altura</option>
-                                <option value="idade">🎂 Idade</option>
-                            </optgroup>
-                        </select>
+                        <label class="filter-group-label">📋 Ordenar por Categoria</label>
+                        <div style="display:flex; gap:10px;">
+                            <select id="sort-by" class="filter-select" style="flex:1;">
+                                <optgroup label="⏱ Participação">
+                                    <option value="jogos">🏟️ Partidas</option>
+                                    <option value="minutos" selected>⏱ Minutos Jogados</option>
+                                    <option value="titulares">✔️ Como Titular</option>
+                                    <option value="reservas">🔄 Como Reserva</option>
+                                    <option value="pctTitular">📈 % Titularidade</option>
+                                    <option value="mediaMinutos">⏱ Média Mins/Jogo</option>
+                                </optgroup>
+                                <optgroup label="⚽ Ofensivo">
+                                    <option value="gols">⚽ Gols Marcados</option>
+                                    <option value="gols90">⚽ Gols / 90'</option>
+                                    <option value="gols_normal">⚽ Gols Normais</option>
+                                    <option value="gols_falta">🎯 Gols de Falta</option>
+                                    <option value="gols_penalti">🥅 Gols de Pênalti</option>
+                                    <option value="gols_contra">❌ Gols Contra</option>
+                                </optgroup>
+                                <optgroup label="🛡️ Defensivo">
+                                    <option value="gols_sofridos">🛡️ Gols Sofridos Em Campo</option>
+                                    <option value="golsSofridos90">🛡️ Gols Sofridos / 90'</option>
+                                </optgroup>
+                                <optgroup label="🟨 Disciplinar">
+                                    <option value="amarelos90">🟨 Amarelos / 90'</option>
+                                    <option value="vermelhos90">🟥 Vermelhos / 90'</option>
+                                </optgroup>
+                                <optgroup label="📌 Perfil">
+                                    <option value="camisa_frequente">👕 Camisa Frequente</option>
+                                    <option value="altura">📏 Altura</option>
+                                    <option value="idade">🎂 Idade</option>
+                                </optgroup>
+                            </select>
+                            <button id="sort-dir-btn" class="filter-select" style="width:auto; padding:0 12px; cursor:pointer; font-weight:700;" title="Alternar Direção">▼ Desc</button>
+                        </div>
                     </div>
 
-                    <!-- Jogadores por Página -->
+                    <!-- Atletas por Página -->
                     <div class="filter-group">
-                        <label class="filter-group-label">📄 Jogadores / Página</label>
+                        <label class="filter-group-label">📄 Atletas / Página</label>
                         <select id="items-per-page" class="filter-select" style="min-width: 120px;">
                             <option value="12">12 por pág.</option>
                             <option value="24" selected>24 por pág.</option>
@@ -2263,11 +2303,7 @@
         <!-- ================= LANDING PAGE INICIAL MINIMALISTA ================= -->
         <div id="panel-home" class="view-panel active">
             <div class="home-center-layout">
-                <span class="home-logo-ball">⚽</span>
-                <h1 class="hero-title" style="font-size: 40px; font-weight: 900; letter-spacing: -1px; background: linear-gradient(90deg, #00ff66, #3b82f6, #c084fc, #00ff66); background-size: 300% 100%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: logoShimmer 4s linear infinite;">SÚMULA INTELIGENTE</h1>
-                <p class="hero-subtitle" style="font-size: 15px; color: var(--text-muted); font-weight: 500;">
-                    Plataforma Profissional de Scouting &amp; Análise de Desempenho
-                </p>
+                <img src="logo.png" alt="MétricaAtleta - Análise e Comparação de Desempenho Baseado em Súmulas" class="theme-logo">
                 
                 <!-- Barra de Busca Interativa com Autocomplete -->
                 <div class="home-search-container">
@@ -2276,40 +2312,27 @@
                     <div id="home-search-results" class="home-search-results"></div>
                 </div>
                 
-                <!-- Cards de Ações Minimalistas -->
-                <div class="home-actions-row">
-                    <div class="home-action-card" id="home-btn-scouting">
-                        <div style="display:flex; align-items:center; gap:24px;">
-                            <div style="font-size:32px; background:rgba(0,255,102,0.1); width:64px; height:64px; display:flex; align-items:center; justify-content:center; border-radius:16px; color:var(--accent-green);">🔍</div>
-                            <div style="display:flex; flex-direction:column; gap:6px;">
-                                <span class="home-action-card-title">Scouting</span>
-                                <span class="home-action-card-desc">Explorar base de 481 atletas com filtros avançados</span>
-                            </div>
-                        </div>
-                        <div style="color:var(--text-muted); font-size:24px; transition:all 0.3s; font-weight:bold;" class="card-arrow">➔</div>
+                <!-- Cards de Ações Inovadores -->
+                <div class="home-actions-row" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:20px; width:100%; max-width:1000px; margin-top:20px;">
+                    <div class="home-action-card" id="home-btn-scouting" style="background: linear-gradient(145deg, var(--bg-card), rgba(0,255,102,0.05)); border: 1px solid rgba(0,255,102,0.2); padding:30px; border-radius:24px; position:relative; overflow:hidden; display:flex; flex-direction:column; align-items:center; text-align:center; transition:all 0.4s cubic-bezier(0.4, 0, 0.2, 1); cursor:pointer;" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 20px 40px rgba(0,255,102,0.15)';" onmouseout="this.style.transform='none'; this.style.boxShadow='none';">
+                        <div style="font-size:42px; background:rgba(0,255,102,0.1); width:80px; height:80px; display:flex; align-items:center; justify-content:center; border-radius:24px; color:var(--accent-green); box-shadow: 0 0 30px rgba(0,255,102,0.2); margin-bottom:20px; transition:transform 0.4s;" onmouseover="this.style.transform='scale(1.1)';" onmouseout="this.style.transform='none';">📋</div>
+                        <span class="home-action-card-title" style="color:var(--text-main); font-size:22px; font-weight:900; margin-bottom:10px;">Scouting & Descoberta</span>
+                        <span class="home-action-card-desc" style="font-size:14px; line-height:1.5; color:var(--text-muted);">Explore e filtre toda a base. Acesse perfis detalhados e indicadores completos.</span>
+                        <div style="margin-top:20px; color:var(--accent-green); font-size:28px; font-weight:bold; transition:transform 0.3s;" class="card-arrow">→</div>
                     </div>
-                    <div class="home-action-card" id="home-btn-compare">
-                        <div style="display:flex; align-items:center; gap:24px;">
-                            <div style="font-size:32px; background:rgba(139,92,246,0.1); width:64px; height:64px; display:flex; align-items:center; justify-content:center; border-radius:16px; color:var(--accent-purple);">⚖️</div>
-                            <div style="display:flex; flex-direction:column; gap:6px;">
-                                <span class="home-action-card-title" style="color:var(--accent-purple);">Comparador</span>
-                                <span class="home-action-card-desc">Análise matricial frente-a-frente de atletas</span>
-                            </div>
-                        </div>
-                        <div style="color:var(--text-muted); font-size:24px; transition:all 0.3s; font-weight:bold;" class="card-arrow">➔</div>
+                    <div class="home-action-card" id="home-btn-compare" style="background: linear-gradient(145deg, var(--bg-card), rgba(139,92,246,0.05)); border: 1px solid rgba(139,92,246,0.2); padding:30px; border-radius:24px; position:relative; overflow:hidden; display:flex; flex-direction:column; align-items:center; text-align:center; transition:all 0.4s cubic-bezier(0.4, 0, 0.2, 1); cursor:pointer;" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 20px 40px rgba(139,92,246,0.15)';" onmouseout="this.style.transform='none'; this.style.boxShadow='none';">
+                        <div style="font-size:42px; background:rgba(139,92,246,0.1); width:80px; height:80px; display:flex; align-items:center; justify-content:center; border-radius:24px; color:var(--accent-purple); box-shadow: 0 0 30px rgba(139,92,246,0.2); margin-bottom:20px; transition:transform 0.4s;" onmouseover="this.style.transform='scale(1.1)';" onmouseout="this.style.transform='none';">⚔️</div>
+                        <span class="home-action-card-title" style="color:var(--text-main); font-size:22px; font-weight:900; margin-bottom:10px;">Comparador</span>
+                        <span class="home-action-card-desc" style="font-size:14px; line-height:1.5; color:var(--text-muted);">Monte matrizes de análise comparativa frente-a-frente entre múltiplos atletas.</span>
+                        <div style="margin-top:20px; color:var(--accent-purple); font-size:28px; font-weight:bold; transition:transform 0.3s;" class="card-arrow">→</div>
                     </div>
-                    <div class="home-action-card" id="home-btn-advanced">
-                        <div style="display:flex; align-items:center; gap:24px;">
-                            <div style="font-size:32px; background:rgba(59,130,246,0.1); width:64px; height:64px; display:flex; align-items:center; justify-content:center; border-radius:16px; color:var(--accent-blue);">📊</div>
-                            <div style="display:flex; flex-direction:column; gap:6px;">
-                                <span class="home-action-card-title" style="color:var(--accent-blue);">Estatísticas Avançadas</span>
-                                <span class="home-action-card-desc">Comparativo de performance Atleta vs. Grupo</span>
-                            </div>
-                        </div>
-                        <div style="color:var(--text-muted); font-size:24px; transition:all 0.3s; font-weight:bold;" class="card-arrow">➔</div>
+                    <div class="home-action-card" id="home-btn-advanced" style="background: linear-gradient(145deg, var(--bg-card), rgba(59,130,246,0.05)); border: 1px solid rgba(59,130,246,0.2); padding:30px; border-radius:24px; position:relative; overflow:hidden; display:flex; flex-direction:column; align-items:center; text-align:center; transition:all 0.4s cubic-bezier(0.4, 0, 0.2, 1); cursor:pointer;" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 20px 40px rgba(59,130,246,0.15)';" onmouseout="this.style.transform='none'; this.style.boxShadow='none';">
+                        <div style="font-size:42px; background:rgba(59,130,246,0.1); width:80px; height:80px; display:flex; align-items:center; justify-content:center; border-radius:24px; color:var(--accent-blue); box-shadow: 0 0 30px rgba(59,130,246,0.2); margin-bottom:20px; transition:transform 0.4s;" onmouseover="this.style.transform='scale(1.1)';" onmouseout="this.style.transform='none';">📈</div>
+                        <span class="home-action-card-title" style="color:var(--text-main); font-size:22px; font-weight:900; margin-bottom:10px;">Estatísticas Avançadas</span>
+                        <span class="home-action-card-desc" style="font-size:14px; line-height:1.5; color:var(--text-muted);">Avalie a performance de um atleta contra a média de mercado usando Smart Cards.</span>
+                        <div style="margin-top:20px; color:var(--accent-blue); font-size:28px; font-weight:bold; transition:transform 0.3s;" class="card-arrow">→</div>
                     </div>
                 </div>
-
 
             </div>
         </div>
@@ -2345,11 +2368,11 @@
                             <!-- Linha 1: Cabeçalhos de Grupo -->
                             <tr class="thead-group-row">
                                 <th colspan="4" style="border:none; background:transparent;"></th>
-                                <th colspan="6" style="text-align:center; background:rgba(59,130,246,0.08); color:var(--accent-blue); border-left:2px solid var(--accent-blue); font-size:9px; letter-spacing:1px; text-transform:uppercase; font-weight:900; padding:5px 8px;">⏱ Participação</th>
-                                <th colspan="3" style="text-align:center; background:rgba(0,255,102,0.07); color:var(--accent-green); border-left:2px solid var(--accent-green); font-size:9px; letter-spacing:1px; text-transform:uppercase; font-weight:900; padding:5px 8px;">⚽ Ofensivo</th>
-                                <th colspan="2" style="text-align:center; background:rgba(239,68,68,0.07); color:var(--accent-red); border-left:2px solid var(--accent-red); font-size:9px; letter-spacing:1px; text-transform:uppercase; font-weight:900; padding:5px 8px;">🛡 Defensivo</th>
+                                <th colspan="7" style="text-align:center; background:rgba(59,130,246,0.08); color:var(--accent-blue); border-left:2px solid var(--accent-blue); font-size:9px; letter-spacing:1px; text-transform:uppercase; font-weight:900; padding:5px 8px;">⏱ Participação</th>
+                                <th colspan="6" style="text-align:center; background:rgba(0,255,102,0.07); color:var(--accent-green); border-left:2px solid var(--accent-green); font-size:9px; letter-spacing:1px; text-transform:uppercase; font-weight:900; padding:5px 8px;">⚽ Ofensivo</th>
+                                <th colspan="2" style="text-align:center; background:rgba(239,68,68,0.07); color:var(--accent-red); border-left:2px solid var(--accent-red); font-size:9px; letter-spacing:1px; text-transform:uppercase; font-weight:900; padding:5px 8px;">🛡️ Defensivo</th>
                                 <th colspan="2" style="text-align:center; background:rgba(251,191,36,0.08); color:var(--accent-yellow); border-left:2px solid var(--accent-yellow); font-size:9px; letter-spacing:1px; text-transform:uppercase; font-weight:900; padding:5px 8px;">🟨 Disciplinar</th>
-                                <th colspan="2" style="text-align:center; background:rgba(139,92,246,0.07); color:var(--accent-purple); border-left:2px solid var(--accent-purple); font-size:9px; letter-spacing:1px; text-transform:uppercase; font-weight:900; padding:5px 8px;">📌 Perfil</th>
+                                <th colspan="3" style="text-align:center; background:rgba(139,92,246,0.07); color:var(--accent-purple); border-left:2px solid var(--accent-purple); font-size:9px; letter-spacing:1px; text-transform:uppercase; font-weight:900; padding:5px 8px;">📌 Perfil</th>
                             </tr>
                             <!-- Linha 2: Cabeçalhos das Colunas -->
                             <tr>
@@ -2358,15 +2381,19 @@
                                 <th>Posição</th>
                                 <th>Equipe</th>
                                 <!-- Participação -->
-                                <th data-sort="jogos" style="cursor:pointer; text-align:center; border-left:2px solid var(--accent-blue); color:var(--accent-blue);">Jogos <span class="sort-icon"></span></th>
+                                <th data-sort="jogos_relacionados" style="cursor:pointer; text-align:center; border-left:2px solid var(--accent-blue); color:var(--accent-blue);">Rel. <span class="sort-icon"></span></th>
                                 <th data-sort="titulares" style="cursor:pointer; text-align:center; color:var(--accent-blue);">Tit. <span class="sort-icon"></span></th>
-                                <th data-sort="reservas" style="cursor:pointer; text-align:center; color:var(--accent-blue);">Res. <span class="sort-icon"></span></th>
                                 <th data-sort="pctTitular" style="cursor:pointer; text-align:center; color:var(--accent-blue); font-weight:800;">% Tit. <span class="sort-icon"></span></th>
+                                <th data-sort="substituido_saiu" style="cursor:pointer; text-align:center; color:var(--accent-blue);">Saiu <span class="sort-icon"></span></th>
+                                <th data-sort="substituido_entrou" style="cursor:pointer; text-align:center; color:var(--accent-blue);">Entrou <span class="sort-icon"></span></th>
                                 <th data-sort="minutos" style="cursor:pointer; text-align:center; color:var(--accent-blue); font-weight:800;">Minutos <span class="sort-icon"></span></th>
                                 <th data-sort="mediaMinutos" style="cursor:pointer; text-align:center; color:var(--accent-blue);">M/J <span class="sort-icon"></span></th>
                                 <!-- Ofensivo -->
                                 <th data-sort="gols" style="cursor:pointer; text-align:center; border-left:2px solid var(--accent-green); color:var(--accent-green);">Gols <span class="sort-icon"></span></th>
                                 <th data-sort="gols90" style="cursor:pointer; text-align:center; color:var(--accent-green);">G/90' <span class="sort-icon"></span></th>
+                                <th data-sort="gols_normal" style="cursor:pointer; text-align:center; color:var(--accent-green);">Normal <span class="sort-icon"></span></th>
+                                <th data-sort="gols_falta" style="cursor:pointer; text-align:center; color:var(--accent-green);">Falta <span class="sort-icon"></span></th>
+                                <th data-sort="gols_penalti" style="cursor:pointer; text-align:center; color:var(--accent-green);">Pên. <span class="sort-icon"></span></th>
                                 <th data-sort="gols_contra" style="cursor:pointer; text-align:center; color:var(--accent-red);">G.C. <span class="sort-icon"></span></th>
                                 <!-- Defensivo -->
                                 <th data-sort="gols_sofridos" style="cursor:pointer; text-align:center; border-left:2px solid var(--accent-red); color:var(--accent-red);">Gols Sofridos <span class="sort-icon"></span></th>
@@ -2375,7 +2402,8 @@
                                 <th data-sort="amarelos90" style="cursor:pointer; text-align:center; border-left:2px solid var(--accent-yellow); color:var(--accent-yellow);">CA/90' <span class="sort-icon"></span></th>
                                 <th data-sort="vermelhos90" style="cursor:pointer; text-align:center; color:var(--accent-yellow);">CV/90' <span class="sort-icon"></span></th>
                                 <!-- Perfil -->
-                                <th data-sort="altura" style="cursor:pointer; text-align:center; border-left:2px solid var(--accent-purple); color:var(--accent-purple);">Alt. <span class="sort-icon"></span></th>
+                                <th data-sort="camisa_frequente" style="cursor:pointer; text-align:center; border-left:2px solid var(--accent-purple); color:var(--accent-purple);">Camisa <span class="sort-icon"></span></th>
+                                <th data-sort="altura" style="cursor:pointer; text-align:center; color:var(--accent-purple);">Alt. <span class="sort-icon"></span></th>
                                 <th data-sort="idade" style="cursor:pointer; text-align:center; color:var(--accent-purple);">Idade <span class="sort-icon"></span></th>
                             </tr>
                         </thead>
@@ -2396,9 +2424,9 @@
             <!-- Caso a lista esteja vazia -->
             <div id="compare-empty-state" class="comparison-help-card">
                 <span style="font-size: 50px;">⚖</span>
-                <h3 style="font-size: 20px; font-weight:700;">Nenhum jogador selecionado</h3>
+                <h3 style="font-size: 20px; font-weight:700;">Nenhum atleta selecionado</h3>
                 <p style="color: var(--text-muted); max-width: 450px; line-height: 1.5; margin-bottom: 10px;">
-                    Selecione um jogador diretamente no campo abaixo ou vá para a aba <b>Scouting</b> e ative a balança ⚖ em seus respectivos cards.
+                    Selecione um atleta diretamente no campo abaixo ou vá para a aba <b>Scouting</b> e ative a balança ⚖ em seus respectivos cards.
                 </p>
                 <div style="display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:15px; width: 100%;">
                     <div class="home-search-container" style="max-width:350px; width:100%; border: 1px solid var(--border-color);">
@@ -2412,11 +2440,12 @@
 
             <!-- Painel de Comparação Ativo -->
             <div id="compare-active-panel" class="comparison-grid" style="display: none;">
-                <!-- Caixa de Pesquisa rápida de Adição de Jogador no Comparador -->
+                <!-- Caixa de Pesquisa rápida de Adição de Atleta no Comparador -->
                 <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:15px; background:var(--bg-card); border: 1px solid var(--border-color); padding:15px 20px; border-radius:12px; box-shadow: var(--shadow-premium);">
                     <h3 style="font-size:15px; font-weight:800; text-transform:uppercase; border-left:3px solid var(--accent-green); padding-left:10px; margin:0;">Matriz de Scout Comparativa</h3>
                     <div style="display:flex; align-items:center; gap:10px;">
-                        <span style="font-size:13px; color:var(--text-muted); font-weight:600;">Adicionar Atleta à Lista:</span>
+                        <button id="compare-clear-btn" class="filter-select" style="background:rgba(239,68,68,0.1); color:var(--accent-red); border:1px solid rgba(239,68,68,0.3); font-weight:700; padding:8px 12px; margin-right:10px; cursor:pointer;" title="Remover todos os atletas da comparação">Limpar Matriz</button>
+                        <span style="font-size:13px; color:var(--text-muted); font-weight:600;">Adicionar Atleta:</span>
                         <div class="home-search-container" style="width:250px; margin:0; border: 1px solid var(--border-color);">
                             <span class="home-search-icon" style="top:50%; transform:translateY(-50%); font-size:14px; left:12px;">🔍</span>
                             <input type="text" id="compare-search-input" class="home-search-input" style="padding:10px 15px 10px 35px; font-size:13px;" placeholder="Buscar atleta...">
@@ -2544,7 +2573,7 @@
             
             <!-- Lado Esquerdo: Ficha Básica -->
             <div class="modal-left">
-                <img id="modal-photo" src="" alt="Foto Jogador" class="modal-player-photo">
+                <img id="modal-photo" src="" alt="Foto Atleta" class="modal-player-photo">
                 <div class="modal-player-title">
                     <div id="modal-nickname" class="modal-player-nickname"></div>
                     <div id="modal-fullname" class="modal-player-fullname"></div>
@@ -2602,14 +2631,10 @@
                     <!-- Grupo 1: Participação -->
                     <div style="margin-bottom: 18px;">
                         <div style="font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-blue); margin-bottom: 10px; padding-left: 4px; border-left: 3px solid var(--accent-blue); padding-left: 8px;">⏱ Participação</div>
-                        <div class="modal-stats-grid" style="grid-template-columns: repeat(5, minmax(0, 1fr)) !important; gap: 8px;">
+                        <div class="modal-stats-grid" style="grid-template-columns: repeat(4, minmax(0, 1fr)) !important; gap: 8px;">
                             <div class="modal-stat-box" style="padding: 10px 4px;">
-                                <span id="modal-stat-games" class="modal-stat-val minutes">0</span>
-                                <span class="modal-stat-lbl" style="font-size: 8px; line-height:1.1; word-wrap: break-word;">Partidas</span>
-                            </div>
-                            <div class="modal-stat-box" style="padding: 10px 4px;">
-                                <span id="modal-stat-titular" class="modal-stat-val minutes" style="color:var(--accent-blue);">0</span>
-                                <span class="modal-stat-lbl" style="font-size: 8px; line-height:1.1; word-wrap: break-word;">Titular/Reserva</span>
+                                <span id="modal-stat-related" class="modal-stat-val minutes">0</span>
+                                <span class="modal-stat-lbl" style="font-size: 8px; line-height:1.1; word-wrap: break-word;">Jogos Relacionados</span>
                             </div>
                             <div class="modal-stat-box" style="padding: 10px 4px;">
                                 <span id="modal-stat-pct" class="modal-stat-val minutes" style="color:var(--accent-purple);">0%</span>
@@ -2622,6 +2647,22 @@
                             <div class="modal-stat-box" style="padding: 10px 4px;">
                                 <span id="modal-stat-med-mins" class="modal-stat-val minutes" style="color:var(--accent-blue);">0'</span>
                                 <span class="modal-stat-lbl" style="font-size: 8px; line-height:1.1; word-wrap: break-word;">Média Mins/Jogo</span>
+                            </div>
+                            <div class="modal-stat-box" style="padding: 10px 4px;">
+                                <span id="modal-stat-titular" class="modal-stat-val minutes" style="color:var(--accent-green);">0</span>
+                                <span class="modal-stat-lbl" style="font-size: 8px; line-height:1.1; word-wrap: break-word;">Como Titular</span>
+                            </div>
+                            <div class="modal-stat-box" style="padding: 10px 4px;">
+                                <span id="modal-stat-sub-saiu" class="modal-stat-val minutes" style="color:var(--accent-red);">0</span>
+                                <span class="modal-stat-lbl" style="font-size: 8px; line-height:1.1; word-wrap: break-word;">Substituído (Saiu)</span>
+                            </div>
+                            <div class="modal-stat-box" style="padding: 10px 4px;">
+                                <span id="modal-stat-sub-entrou" class="modal-stat-val minutes" style="color:var(--accent-yellow);">0</span>
+                                <span class="modal-stat-lbl" style="font-size: 8px; line-height:1.1; word-wrap: break-word;">Entrou (Reserva)</span>
+                            </div>
+                            <div class="modal-stat-box" style="padding: 10px 4px;">
+                                <span id="modal-stat-camisa" class="modal-stat-val minutes" style="color:var(--accent-purple);">-</span>
+                                <span class="modal-stat-lbl" style="font-size: 8px; line-height:1.1; word-wrap: break-word;">Camisa Frequente</span>
                             </div>
                         </div>
                     </div>
@@ -2726,7 +2767,7 @@
     </div>
 
     <!-- Conexão com os Dados -->
-    <script src="data.js?v=1783645780"></script>
+    <script src="data.js?v=1783776620"></script>
 
     <!-- Lógica da Aplicação -->
     <script>
@@ -2948,8 +2989,9 @@
 
             // ================= FUNÇÕES DE CÁLCULO E AUXILIARES =================
             
-            // Estatísticas dinâmicas por jogador cruzando campeonatos, período de data e equipes selecionadas
+            // Estatísticas dinâmicas por atleta cruzando campeonatos, período de data e equipes selecionadas
             function getFilteredPlayerStats(p, selectedChampionships, dateStart, dateEnd, selectedTeams) {
+                let jogos_relacionados = 0;
                 let jogos = 0;
                 let minutos = 0;
                 let gols = 0;
@@ -2962,6 +3004,9 @@
                 let vermelhos = 0;
                 let titulares = 0;
                 let reservas = 0;
+                let substituido_saiu = 0;
+                let substituido_entrou = 0;
+                let numeros = {};
                 
                 const matches = (p.partidas || []).filter(part => {
                     // Filtro de competição
@@ -2985,7 +3030,12 @@
                 });
 
                 matches.forEach(part => {
-                    jogos++;
+                    jogos_relacionados++;
+                    if (part.minutos > 0) jogos++;
+                    if (part.numero) numeros[part.numero] = (numeros[part.numero] || 0) + 1;
+                    if (part.sub_saiu) substituido_saiu++;
+                    if (part.sub_entrou) substituido_entrou++;
+                    
                     minutos += part.minutos;
                     gols += part.gols;
                     gols_contra += part.gols_contra || 0;
@@ -3008,6 +3058,15 @@
                         reservas++;
                     }
                 });
+                
+                let camisa_frequente = '-';
+                let max_count = 0;
+                for (let num in numeros) {
+                    if (numeros[num] > max_count) {
+                        max_count = numeros[num];
+                        camisa_frequente = num;
+                    }
+                }
 
                 const pctTitular = jogos > 0 ? Math.round((titulares / jogos) * 100) : 0;
                 const mediaMinutos = jogos > 0 ? Math.round(minutos / jogos) : 0;
@@ -3018,6 +3077,11 @@
                 const vermelhos90 = minutos > 0 ? parseFloat(((vermelhos / minutos) * 90).toFixed(2)) : 0.0;
                 
                 return {
+                    partidasFiltradas: matches,
+                    jogos_relacionados,
+                    camisa_frequente,
+                    substituido_saiu,
+                    substituido_entrou,
                     jogos,
                     minutos,
                     gols,
@@ -3133,7 +3197,7 @@
                 const uniqueTeams = new Set(players.map(p => p.equipe)).size;
                 
                 const uniqueChamps = new Set();
-                // Partidas únicas: identificadas por jogo+data+campeonato (evita duplicata por jogador)
+                // Partidas únicas: identificadas por jogo+data+campeonato (evita duplicata por atleta)
                 const uniqueMatchKeys = new Set();
                 players.forEach(p => {
                     if (p.partidas) {
@@ -3163,7 +3227,7 @@
                     return;
                 }
 
-                // Filtra até 5 jogadores correspondentes
+                // Filtra até 5 atletas correspondentes
                 const matches = players.filter(p => {
                     const normalized_name = p.nome.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
                     const normalized_nickname = p.apelido.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -3171,7 +3235,7 @@
                 }).slice(0, 5);
 
                 if (matches.length === 0) {
-                    homeSearchResults.innerHTML = `<div style="padding: 15px; text-align: center; color: var(--text-muted); font-size:13px; font-weight:700;">Nenhum jogador encontrado</div>`;
+                    homeSearchResults.innerHTML = `<div style="padding: 15px; text-align: center; color: var(--text-muted); font-size:13px; font-weight:700;">Nenhum atleta encontrado</div>`;
                 } else {
                     homeSearchResults.innerHTML = '';
                     matches.forEach(p => {
@@ -3192,7 +3256,7 @@
                             const tabAdvancedBtn = document.getElementById('tab-advanced-btn');
                             if (tabAdvancedBtn) tabAdvancedBtn.click();
                             
-                            // Seleciona o jogador e roda a análise
+                            // Seleciona o atleta e roda a análise
                             const sel = document.getElementById('advanced-player-select');
                             if (sel) {
                                 sel.value = p.cbf + '|' + p.nome;
@@ -3250,6 +3314,9 @@
                     } else {
                         currentSortKey = key;
                         currentSortDir = 'desc';
+                    }
+                    if (document.getElementById('sort-dir-btn')) {
+                        document.getElementById('sort-dir-btn').innerHTML = currentSortDir === 'desc' ? '▼ Desc' : '▲ Asc';
                     }
                     
                     document.querySelectorAll('.players-table th[data-sort]').forEach(el => {
@@ -3407,7 +3474,7 @@
             function renderTablePage(pageData) {
                 tableBody.innerHTML = '';
                 if (pageData.length === 0) {
-                    tableBody.innerHTML = `<tr><td colspan="19"><div class="empty-state"><span>🔍</span> Nenhum jogador encontrado.</div></td></tr>`;
+                    tableBody.innerHTML = `<tr><td colspan="19"><div class="empty-state"><span>🔍</span> Nenhum atleta encontrado.</div></td></tr>`;
                     return;
                 }
 
@@ -3441,19 +3508,24 @@
                         </td>
                         <td><span class="position-badge" style="margin:0; font-size:10px; padding:2px 8px;">${p.posicao}</span></td>
                         <td style="color: var(--accent-blue); font-weight: 700;">${p.equipe}</td>
-                        <td style="text-align: center; font-weight: 700;">${stats.jogos}</td>
+                        <td style="text-align: center; font-weight: 700;">${stats.jogos_relacionados}</td>
                         <td style="text-align: center; color: var(--accent-blue);">${stats.titulares}</td>
-                        <td style="text-align: center; color: var(--text-muted);">${stats.reservas}</td>
                         <td style="text-align: center; color: var(--accent-purple); font-weight: 700;">${stats.pctTitular}%</td>
+                        <td style="text-align: center; color: var(--accent-red);">${stats.substituido_saiu}</td>
+                        <td style="text-align: center; color: var(--accent-yellow);">${stats.substituido_entrou}</td>
                         <td style="text-align: center;">${stats.minutos}</td>
                         <td style="text-align: center; color: var(--accent-blue);">${stats.mediaMinutos}'</td>
                         <td style="text-align: center; color: var(--accent-green); font-weight: 700;">${stats.gols}</td>
                         <td style="text-align: center; color: var(--accent-green); font-weight: 700;">${stats.gols90}</td>
+                        <td style="text-align: center; color: var(--accent-green);">${stats.gols_normal}</td>
+                        <td style="text-align: center; color: var(--accent-green);">${stats.gols_falta}</td>
+                        <td style="text-align: center; color: var(--accent-green);">${stats.gols_penalti}</td>
                         <td style="text-align: center; color: var(--accent-red); font-weight: 700;">${stats.gols_contra}</td>
                         <td style="text-align: center; color: var(--accent-blue);">${stats.gols_sofridos}</td>
                         <td style="text-align: center; color: var(--accent-purple); font-weight: 700;">${stats.golsSofridos90}</td>
                         <td style="text-align: center; color: var(--accent-yellow);">${stats.amarelos90}</td>
                         <td style="text-align: center; color: var(--accent-red);">${stats.vermelhos90}</td>
+                        <td style="text-align: center; color: var(--text-muted); font-weight: 700;">${stats.camisa_frequente}</td>
                         <td style="text-align: center;">${p.altura ? p.altura + ' cm' : '-'}</td>
                         <td style="text-align: center;">${p.idade || '-'}</td>
                     `;
@@ -3570,11 +3642,14 @@
                 document.getElementById('modal-goals-penalti').textContent = stats.gols_penalti;
 
                 // Estatísticas
-                document.getElementById('modal-stat-games').textContent = stats.jogos;
-                document.getElementById('modal-stat-titular').textContent = `${stats.titulares} / ${stats.reservas}`;
+                document.getElementById('modal-stat-related').textContent = stats.jogos_relacionados;
                 document.getElementById('modal-stat-pct').textContent = stats.pctTitular + '%';
                 document.getElementById('modal-stat-minutes').textContent = stats.minutos;
                 document.getElementById('modal-stat-med-mins').textContent = stats.mediaMinutos + "'";
+                document.getElementById('modal-stat-titular').textContent = stats.titulares;
+                document.getElementById('modal-stat-sub-saiu').textContent = stats.substituido_saiu;
+                document.getElementById('modal-stat-sub-entrou').textContent = stats.substituido_entrou;
+                document.getElementById('modal-stat-camisa').textContent = stats.camisa_frequente;
                 document.getElementById('modal-stat-goals').textContent = stats.gols;
                 document.getElementById('modal-stat-goals90').textContent = stats.gols90;
                 document.getElementById('modal-stat-goals-contra').textContent = stats.gols_contra;
@@ -3742,15 +3817,15 @@
                         else if (filterHeightVal === 'super') matchesHeight = val > 190;
                     }
 
-                    // Filtro de nível (profissional/amador) via campo nivel do jogador ou da partida
+                    // Filtro de nível (profissional/amador) via campo nivel do atleta ou da partida
                     let matchesLevel = true;
                     if (filterLevelVal) {
-                        // Primeiro verifica o campo nivel do jogador
+                        // Primeiro verifica o campo nivel do atleta
                         if (p.nivel) {
                             const n = p.nivel.toLowerCase();
                             matchesLevel = n === filterLevelVal;
                         } else {
-                            // Se não tem nivel no jogador, verifica nas partidas filtradas
+                            // Se não tem nivel no atleta, verifica nas partidas filtradas
                             matchesLevel = stats.partidasFiltradas.some(pt => {
                                 if (pt.nivel) {
                                     return pt.nivel.toLowerCase() === filterLevelVal;
@@ -3793,8 +3868,9 @@
                         }
                     }
 
-                    // Se não tiver jogos no filtro exato atual, ele é excluído da listagem
-                    if (stats.jogos === 0) return false;
+                    // Se não tiver jogos no filtro exato atual, ele é excluído da listagem (apenas se houver filtro ativo de contexto)
+                    const hasContextFilter = selectedChampionships.length > 0 || selectedTeams.length > 0 || dateStart !== null || dateEnd !== null;
+                    if (hasContextFilter && stats.jogos === 0) return false;
 
                     return matchesBase && matchesPos;
                 });
@@ -3816,7 +3892,7 @@
 
                 filteredListCache = filtered;
                 
-                // Atualiza o contador de jogadores encontrados na barra de resultados e na aba de Scouting
+                // Atualiza o contador de atletas encontrados na barra de resultados e na aba de Scouting
                 document.getElementById('results-badge').textContent = `${filteredListCache.length} atleta(s) encontrado(s)`;
                 scoutingCountSpan.innerHTML = `${filteredListCache.length} <span style="font-size:10px; color:var(--text-muted); font-weight:normal;">de ${players.length}</span>`;
                 // --- Filtros Inteligentes (Cascata) ---
@@ -3891,7 +3967,7 @@
             }
 
             function renderEmptyState(container) {
-                container.innerHTML = `<div class="empty-state"><span>🔍</span> Nenhum jogador encontrado com as configurações de filtros ativas.</div>`;
+                container.innerHTML = `<div class="empty-state"><span>🔍</span> Nenhum atleta encontrado com as configurações de filtros ativas.</div>`;
             }
 
             // Listeners de filtro
@@ -3924,6 +4000,9 @@
                 sortBy.value = 'minutos';
                 currentSortKey = 'minutos';
                 currentSortDir = 'desc';
+                if (document.getElementById('sort-dir-btn')) {
+                    document.getElementById('sort-dir-btn').innerHTML = '▼ Desc';
+                }
                 
                 // Limpa ordenação da tabela e volta ao padrão de minutos
                 document.querySelectorAll('.players-table th[data-sort]').forEach(el => {
@@ -3948,6 +4027,9 @@
             sortBy.addEventListener('change', (e) => {
                 currentSortKey = e.target.value;
                 currentSortDir = 'desc';
+                if (document.getElementById('sort-dir-btn')) {
+                    document.getElementById('sort-dir-btn').innerHTML = '▼ Desc';
+                }
                 
                 document.querySelectorAll('.players-table th[data-sort]').forEach(el => {
                     el.classList.remove('active-sort');
@@ -3957,6 +4039,21 @@
                         el.classList.add('active-sort');
                         const icon = el.querySelector('.sort-icon');
                         if (icon) icon.textContent = ' ▼';
+                    }
+                });
+                
+                currentPage = 1;
+                applyFilters();
+            });
+
+            document.getElementById('sort-dir-btn').addEventListener('click', () => {
+                currentSortDir = currentSortDir === 'desc' ? 'asc' : 'desc';
+                document.getElementById('sort-dir-btn').innerHTML = currentSortDir === 'desc' ? '▼ Desc' : '▲ Asc';
+                
+                document.querySelectorAll('.players-table th[data-sort]').forEach(el => {
+                    if (el.classList.contains('active-sort')) {
+                        const icon = el.querySelector('.sort-icon');
+                        if (icon) icon.textContent = currentSortDir === 'desc' ? ' ▼' : ' ▲';
                     }
                 });
                 
@@ -3993,6 +4090,13 @@
             });
 
             // ================= ABA 2: COMPARADOR =================
+            document.getElementById('compare-clear-btn').addEventListener('click', () => {
+                comparisonList = [];
+                compareBadge.textContent = "0";
+                applyFilters();
+                updateComparisonView();
+            });
+
             function setupAutocompleteSearch(inputId, resultsId, onSelectPlayer, excludeCompared = false) {
                 const searchInput = document.getElementById(inputId);
                 const searchResults = document.getElementById(resultsId);
@@ -4102,6 +4206,7 @@
                         metrics: [
                             { label: "Posição", key: "posicao", isNumeric: false, isPlayerProp: true },
                             { label: "Pé Preferencial", key: "pe_preferencial", isNumeric: false, isPlayerProp: true },
+                            { label: "Camisa Frequente", key: "camisa_frequente", isNumeric: false, isPlayerProp: false, higherIsBest: true },
                             { label: "Idade", key: "idade", isNumeric: true, isPlayerProp: true, higherIsBest: false },
                             { label: "Altura (cm)", key: "altura", isNumeric: true, isPlayerProp: true, higherIsBest: true },
                             { label: "Peso (kg)", key: "peso", isNumeric: true, isPlayerProp: true, higherIsBest: true },
@@ -4111,12 +4216,13 @@
                     {
                         groupName: "Participação",
                         metrics: [
-                            { label: "Total de Partidas", key: "jogos", isNumeric: true, isPlayerProp: false, higherIsBest: true },
-                            { label: "Como Titular", key: "titulares", isNumeric: true, isPlayerProp: false, higherIsBest: true },
-                            { label: "Como Reserva", key: "reservas", isNumeric: true, isPlayerProp: false, higherIsBest: false },
-                            { label: "% Titularidade", key: "pctTitular", isNumeric: true, isPlayerProp: false, higherIsBest: true },
+                            { label: "Média de Mins/Jogo", key: "mediaMinutos", isNumeric: true, isPlayerProp: false, higherIsBest: true },
                             { label: "Minutos Jogados", key: "minutos", isNumeric: true, isPlayerProp: false, higherIsBest: true },
-                            { label: "Média de Minutos/Jogo", key: "mediaMinutos", isNumeric: true, isPlayerProp: false, higherIsBest: true }
+                            { label: "Jogos Relacionados", key: "jogos_relacionados", isNumeric: true, isPlayerProp: false, higherIsBest: true },
+                            { label: "Partidas Jogadas", key: "jogos", isNumeric: true, isPlayerProp: false, higherIsBest: true },
+                            { label: "Como Titular", key: "titulares", isNumeric: true, isPlayerProp: false, higherIsBest: true },
+                            { label: "Substituído (Saiu)", key: "substituido_saiu", isNumeric: true, isPlayerProp: false, higherIsBest: false },
+                            { label: "Entrou (Reserva)", key: "substituido_entrou", isNumeric: true, isPlayerProp: false, higherIsBest: true }
                         ]
                     },
                     {
@@ -4280,6 +4386,16 @@
                 [tabHomeBtn, tabScoutingBtn, tabCompareBtn, tabAdvancedBtn].forEach(b => b.classList.remove('active'));
                 active.panel.classList.add('active');
                 active.btn.classList.add('active');
+                
+                if (active.panel !== panelAdvanced && typeof currentAdvancedPlayer !== 'undefined' && currentAdvancedPlayer !== null) {
+                    currentAdvancedPlayer = null;
+                    const advInput = document.getElementById('advanced-player-search');
+                    if (advInput) advInput.value = '';
+                    
+                    document.getElementById('adv-tab-result').style.display = 'none';
+                    document.getElementById('adv-tab-baseline-filters').style.display = 'none';
+                    document.getElementById('adv-tab-empty').style.display = 'block';
+                }
             }
 
             tabHomeBtn.addEventListener('click', () => {
@@ -4463,7 +4579,7 @@
                 });
                 // ------------------------------------------------
 
-                // A estatística do jogador a ser analisado NÃO é limitada pelos filtros de baseline (ele é a referência global)
+                // A estatística do atleta a ser analisado NÃO é limitada pelos filtros de baseline (ele é a referência global)
                 // A não ser que seja um comportamento desejado? Por agora mantemos sem filtro base para o atleta
                 const stats = getFilteredPlayerStats(p, [], null, null);
 
@@ -4553,7 +4669,7 @@
                 }
 
                 const avg = {};
-                const KEYS = ['jogos','minutos','titulares','reservas','pctTitular','mediaMinutos','gols','gols90','gols_contra','gols_sofridos','golsSofridos90','gols_normal','gols_falta','gols_penalti','amarelos','vermelhos','amarelos90','vermelhos90'];
+                const KEYS = ['jogos','minutos','titulares','reservas','pctTitular','mediaMinutos','gols','gols90','gols_contra','gols_sofridos','golsSofridos90','gols_normal','gols_falta','gols_penalti','amarelos','vermelhos','amarelos90','vermelhos90','jogos_relacionados','substituido_saiu','substituido_entrou'];
                 KEYS.forEach(k => { avg[k] = baselinePlayers.reduce((s, item) => s + (parseFloat(item.stats[k]) || 0), 0) / n; });
 
                 if (headerContainer) {
@@ -4582,12 +4698,13 @@
                     {
                         label: '⏱ Participação', color: 'var(--accent-blue)',
                         items: [
-                            { key: 'jogos', label: 'Partidas', higherBetter: true, unit: '' },
-                            { key: 'titulares', label: 'Como Titular', higherBetter: true, unit: '' },
-                            { key: 'reservas', label: 'Como Reserva', higherBetter: false, unit: '' },
-                            { key: 'pctTitular', label: '% Titularidade', higherBetter: true, unit: '%' },
-                            { key: 'minutos', label: 'Minutos Totais', higherBetter: true, unit: "'" },
                             { key: 'mediaMinutos', label: 'Média Min/Jogo', higherBetter: true, unit: "'" },
+                            { key: 'minutos', label: 'Minutos Totais', higherBetter: true, unit: "'" },
+                            { key: 'jogos_relacionados', label: 'Jogos Rel.', higherBetter: true, unit: '' },
+                            { key: 'jogos', label: 'Partidas Jogadas', higherBetter: true, unit: '' },
+                            { key: 'titulares', label: 'Como Titular', higherBetter: true, unit: '' },
+                            { key: 'substituido_saiu', label: 'Subst. Saiu', higherBetter: false, unit: '' },
+                            { key: 'substituido_entrou', label: 'Entrou (Res.)', higherBetter: true, unit: '' }
                         ]
                     },
                     {
@@ -4622,61 +4739,42 @@
                 chartsContainer.innerHTML = '';
                 GROUPS.forEach(group => {
                     const card = document.createElement('div');
-                    card.style.cssText = `background:var(--bg-card); border:1px solid var(--border-color); border-radius:14px; padding:20px; margin-bottom:16px; box-shadow:var(--shadow-premium); position:relative; overflow:hidden;`;
-                    card.innerHTML = `<div style="position:absolute; top:0; left:0; right:0; height:2px; background:${group.color};"></div>
-                        <div style="font-size:11px; font-weight:900; text-transform:uppercase; letter-spacing:1px; color:${group.color}; margin-bottom:16px; border-left:3px solid ${group.color}; padding-left:10px;">${group.label}</div>
-                        <div class="adv-bars"></div>`;
+                    card.style.cssText = `margin-bottom:24px;`;
+                    card.innerHTML = `
+                        <div style="font-size:13px; font-weight:900; text-transform:uppercase; letter-spacing:1px; color:${group.color}; margin-bottom:12px; border-left:4px solid ${group.color}; padding-left:10px; display:flex; align-items:center;">${group.label}</div>
+                        <div class="adv-cards-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(130px, 1fr)); gap:6px;"></div>`;
 
-                    const barsDiv = card.querySelector('.adv-bars');
+                    const gridDiv = card.querySelector('.adv-cards-grid');
                     group.items.forEach(ind => {
                         const playerVal = parseFloat(stats[ind.key]) || 0;
                         const avgVal = parseFloat(avg[ind.key]) || 0;
-                        const maxVal = Math.max(playerVal, avgVal, 0.001);
-                        const playerPct = Math.min((playerVal / maxVal) * 100, 100);
-                        const avgPct = Math.min((avgVal / maxVal) * 100, 100);
-
                         const diff = playerVal - avgVal;
+                        
                         const isGood = ind.higherBetter ? diff >= 0 : diff <= 0;
                         const isBetter = diff !== 0 ? isGood : null;
                         
                         let badgeHtml = '';
+                        let cardBorder = 'border:1px solid var(--border-color);';
                         if (isBetter === true) {
-                            badgeHtml = `<span style="background:rgba(0,255,102,0.1); color:var(--accent-green); padding:2px 6px; border-radius:4px; font-size:9px; font-weight:900; border:1px solid rgba(0,255,102,0.2);">▲ ACIMA DA MÉDIA</span>`;
+                            badgeHtml = `<span style="color:var(--accent-green); font-size:10px; font-weight:900; padding:2px 8px; border-radius:12px; background:rgba(0,255,102,0.15);">▲ ACIMA</span>`;
+                            cardBorder = 'border:1px solid rgba(0,255,102,0.4); background:rgba(0,255,102,0.15);';
                         } else if (isBetter === false) {
-                            badgeHtml = `<span style="background:rgba(239,68,68,0.1); color:#ef4444; padding:2px 6px; border-radius:4px; font-size:9px; font-weight:900; border:1px solid rgba(239,68,68,0.2);">▼ ABAIXO DA MÉDIA</span>`;
+                            badgeHtml = `<span style="color:#ef4444; font-size:10px; font-weight:900; padding:2px 8px; border-radius:12px; background:rgba(239,68,68,0.15);">▼ ABAIXO</span>`;
+                            cardBorder = 'border:1px solid rgba(239,68,68,0.4); background:rgba(239,68,68,0.15);';
                         } else {
-                            badgeHtml = `<span style="background:rgba(255,255,255,0.1); color:var(--text-muted); padding:2px 6px; border-radius:4px; font-size:9px; font-weight:900; border:1px solid rgba(255,255,255,0.2);">- NA MÉDIA</span>`;
+                            badgeHtml = `<span style="color:var(--text-muted); font-size:10px; font-weight:900; padding:2px 8px; border-radius:12px; background:rgba(255,255,255,0.08);">- NA MÉDIA</span>`;
+                            cardBorder = 'border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.02);';
                         }
-                        
-                        const playerColor = isBetter === false ? '#ef4444' : group.color;
 
-                        const row = document.createElement('div');
-                        row.style.cssText = 'margin-bottom:18px;';
-                        row.innerHTML = `
-                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                                <span style="font-size:12px; font-weight:800; color:var(--text-main);">${ind.label}</span>
-                                ${badgeHtml}
-                            </div>
-                            
-                            <div style="display:flex; flex-direction:column; gap:6px;">
-                                <!-- Player Bar -->
-                                <div style="display:flex; align-items:center; gap:8px;">
-                                    <span style="font-size:10px; font-weight:800; width:65px; text-align:right; color:var(--text-main); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${p.apelido}">${p.apelido.split(' ')[0]}</span>
-                                    <div style="flex:1; background:var(--bg-input); height:8px; border-radius:4px; overflow:hidden;">
-                                        <div style="height:100%; width:${playerPct}%; background:${playerColor}; border-radius:4px;"></div>
-                                    </div>
-                                    <span style="font-size:11px; font-weight:900; width:40px; color:${playerColor};">${playerVal.toFixed(2).replace(/\.00$/, '')}${ind.unit}</span>
-                                </div>
-                                <!-- Avg Bar -->
-                                <div style="display:flex; align-items:center; gap:8px;">
-                                    <span style="font-size:10px; font-weight:600; width:65px; text-align:right; color:var(--text-muted);">Média Base</span>
-                                    <div style="flex:1; background:var(--bg-input); height:8px; border-radius:4px; overflow:hidden;">
-                                        <div style="height:100%; width:${avgPct}%; background:rgba(255,255,255,0.2); border-radius:4px;"></div>
-                                    </div>
-                                    <span style="font-size:11px; font-weight:600; width:40px; color:var(--text-muted);">${avgVal.toFixed(2).replace(/\.00$/, '')}${ind.unit}</span>
-                                </div>
-                            </div>`;
-                        barsDiv.appendChild(row);
+                        const box = document.createElement('div');
+                        box.style.cssText = `${cardBorder} border-radius:12px; padding:10px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; box-shadow:var(--shadow-premium); position:relative;`;
+                        box.innerHTML = `
+                            <div style="font-size:10px; font-weight:700; color:var(--text-muted); margin-bottom:8px; height:24px; display:flex; align-items:center; justify-content:center; line-height:1.2;">${ind.label}</div>
+                            <div style="font-size:20px; font-weight:900; color:var(--text-main); line-height:1; margin-bottom:4px;">${playerVal.toFixed(2).replace(/\.00$/, '')}${ind.unit}</div>
+                            <div style="font-size:10px; font-weight:600; color:var(--text-muted); margin-bottom:8px; opacity:0.8;">Média Grupo: ${avgVal.toFixed(2).replace(/\.00$/, '')}${ind.unit}</div>
+                            ${badgeHtml}
+                        `;
+                        gridDiv.appendChild(box);
                     });
                     chartsContainer.appendChild(card);
                 });

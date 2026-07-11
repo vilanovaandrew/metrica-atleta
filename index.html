@@ -2504,9 +2504,26 @@
                 <h2 style="font-size:16px; font-weight:900; text-transform:uppercase; border-left:3px solid var(--accent-purple); padding-left:12px; margin-bottom:6px; color:var(--text-main);">📊 Estatísticas Avançadas — Atleta vs. Média do Grupo</h2>
                 <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px;">Pesquise um atleta e compare seu desempenho contra a média de um grupo específico da sua base de dados.</p>
                 
+                <!-- Filtro Global da Aba (Competição) -->
+                <div style="display:flex; gap:16px; flex-wrap:wrap; align-items:flex-end; margin-bottom:16px; padding:16px; background:rgba(0,0,0,0.1); border-radius:12px; border:1px solid var(--border-color);">
+                    <div style="width:100%; font-size:11px; font-weight:800; color:var(--text-muted); text-transform:uppercase; margin-bottom:-4px;">1. Defina a Competição Base (Opcional)</div>
+                    
+                    <div class="multiselect-container" id="adv-ms-comp" style="flex:1; min-width:200px;">
+                        <button class="multiselect-btn">Competição (Todas)</button>
+                        <div class="multiselect-options">
+                            <input type="text" class="multiselect-search-input" placeholder="Pesquisar...">
+                            <div class="multiselect-header-links">
+                                <span onclick="selectAllMS('adv-ms-comp')">Marcar todas</span>
+                                <span onclick="clearAllMS('adv-ms-comp')">Desmarcar</span>
+                            </div>
+                            <div class="multiselect-list"></div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Busca de Atleta -->
                 <div style="display:flex; gap:16px; flex-wrap:wrap; align-items:flex-end; margin-bottom:16px; padding:16px; background:rgba(0,0,0,0.1); border-radius:12px; border:1px solid var(--border-color);">
-                    <div style="width:100%; font-size:11px; font-weight:800; color:var(--text-muted); text-transform:uppercase; margin-bottom:-4px;">1. Escolha o Atleta para Analisar</div>
+                    <div style="width:100%; font-size:11px; font-weight:800; color:var(--text-muted); text-transform:uppercase; margin-bottom:-4px;">2. Escolha o Atleta para Analisar</div>
                     <div style="display:flex; flex-direction:column; gap:6px; flex:1; min-width:200px; position:relative;">
                         <label style="font-size:9px; font-weight:900; text-transform:uppercase; letter-spacing:1px; color:var(--accent-purple);">Atleta (Busca por Texto)</label>
                         <input type="text" id="advanced-player-search" class="home-search-input" placeholder="Digite o nome do atleta..." autocomplete="off">
@@ -2519,20 +2536,7 @@
                 <!-- Filtros Base de Comparação -->
                 <div id="adv-tab-baseline-filters" style="display:none;">
                     <div style="display:flex; gap:16px; flex-wrap:wrap; align-items:flex-end; margin-bottom:24px; padding:16px; background:rgba(0,0,0,0.1); border-radius:12px; border:1px solid var(--border-color);">
-                        <div style="width:100%; font-size:11px; font-weight:800; color:var(--text-muted); text-transform:uppercase; margin-bottom:-4px;">2. Defina a Base de Comparação (Média)</div>
-                        
-                        <!-- Multiselect Competição -->
-                        <div class="multiselect-container" id="adv-ms-comp" style="flex:1; min-width:140px;">
-                            <button class="multiselect-btn">Competição (Todas)</button>
-                            <div class="multiselect-options">
-                                <input type="text" class="multiselect-search-input" placeholder="Pesquisar...">
-                                <div class="multiselect-header-links">
-                                    <span onclick="selectAllMS('adv-ms-comp')">Marcar todas</span>
-                                    <span onclick="clearAllMS('adv-ms-comp')">Desmarcar</span>
-                                </div>
-                                <div class="multiselect-list"></div>
-                            </div>
-                        </div>
+                        <div style="width:100%; font-size:11px; font-weight:800; color:var(--text-muted); text-transform:uppercase; margin-bottom:-4px;">3. Defina a Base de Comparação (Média)</div>
 
                         <!-- Multiselect Equipe -->
                         <div class="multiselect-container" id="adv-ms-team" style="flex:1; min-width:140px;">
@@ -4624,9 +4628,8 @@
                 });
                 // ------------------------------------------------
 
-                // A estatística do atleta a ser analisado NÃO é limitada pelos filtros de baseline (ele é a referência global)
-                // A não ser que seja um comportamento desejado? Por agora mantemos sem filtro base para o atleta
-                const stats = getFilteredPlayerStats(p, [], null, null);
+                // A estatística do atleta é filtrada de acordo com a competição escolhida no Passo 1
+                const stats = getFilteredPlayerStats(p, baseComp, null, null);
 
                 let baselinePlayers = calculateBaselinePlayers(baseComp, basePos, baseTeam, baseAge, advMinMinutes);
 
